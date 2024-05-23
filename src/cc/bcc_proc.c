@@ -514,8 +514,11 @@ char *bcc_procutils_which_so(const char *libname, int pid) {
   if (strchr(libname, '/'))
     return strdup(libname);
 
-  if (pid && which_so_in_process(libname, pid, libpath))
-    return strdup(libpath);
+  if (pid) {
+    if (which_so_in_process(libname, pid, libpath))
+      return strdup(libpath);
+    return NULL;
+  }
 
   if (lib_cache_count < 0)
     return NULL;
